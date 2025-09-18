@@ -1,0 +1,47 @@
+# Ignore Python virtual environments
+venv/
+env/
+ENV/
+.venv/
+.pyenv/
+.pipenv/
+.virtualenv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ignore pipenv and poetry files
+Pipfile.lock
+poetry.lock
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+var/
+*.manifest
+*.spec
+
+# Ignore coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
