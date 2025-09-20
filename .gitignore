@@ -38,6 +38,7 @@ var/
 htmlcov/
 .tox/
 .coverage
+.env
 .coverage.*
 .cache
 nosetests.xml
