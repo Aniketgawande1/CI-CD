@@ -49,6 +49,5 @@ jobs:
             # Run your Python script
             python3 hello.py
 EOF
-
           # Clean up SSH key
           rm -f ci-cd-key.pem
