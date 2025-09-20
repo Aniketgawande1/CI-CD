@@ -48,6 +48,6 @@ jobs:
             fi
             # Run your Python script
             python3 hello.py
-EOF
+          EOF
           # Clean up SSH key
           rm -f ci-cd-key.pem
