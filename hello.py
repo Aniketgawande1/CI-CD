@@ -1,11 +1,15 @@
 from datetime import datetime
 
-# Example script
-message = f"Hello script ran at {datetime.now()}\n"
+def greet(name="World"):
+    """Return a greeting message."""
+    return f"Hello, {name}!"
 
-# Print to console
-print(message)
+def log_message(msg):
+    """Print and append message to log file."""
+    print(msg)
+    with open("hello.log", "a") as f:
+        f.write(msg + "\n")
 
-# Save to a log file
-with open("hello.log", "a") as f:
-    f.write(message)
+if __name__ == "__main__":
+    message = f"{greet()} script ran at {datetime.now()}"
+    log_message(message)
