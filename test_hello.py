@@ -13,16 +13,17 @@ def test_log_message(tmp_path):
     # Test that log_message writes to a file
     test_file = tmp_path / "test.log"
     msg = f"Test message at {datetime.now()}"
-    
-    # Temporarily patch the open() to write to test_file
+
+    from unittest.mock import patch
     import builtins
-    open_backup = builtins.open
-    builtins.open = lambda path, mode='r': open(test_file, mode)
-    
-    hello.log_message(msg)
-    
-    # Restore open()
-    builtins.open = open_backup
+
+    def custom_open(path, mode='r', *args, **kwargs):
+        if path == "log.txt":
+            return open(test_file, mode, *args, **kwargs)
+        return builtins.open(path, mode, *args, **kwargs)
+
+    with patch("builtins.open", new=custom_open):
+        hello.log_message(msg)
 
     # Check contents
     with open(test_file) as f:
