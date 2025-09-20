@@ -2,43 +2,53 @@ name: Python CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]  # Trigger on push to main
+    branches: [ main ]
   pull_request:
-    branches: [ main ]  # Optional: trigger on pull requests to main
+    branches: [ main ]
 
 jobs:
+
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout the repo
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run tests
       - name: Run tests
         run: pytest
 
-            # Step 5: Deploy to AWS EC2 (only if tests pass)
       - name: Deploy to AWS EC2
         if: success()
         run: |
+          # Write the SSH key from secrets
           echo "${{ secrets.EC2_SSH_KEY }}" > ci-cd-key.pem
           chmod 600 ci-cd-key.pem
-          ssh -o StrictHostKeyChecking=no -i ci-cd-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} '
-            cd CI-CD &&
-            git pull &&
+
+          # SSH into EC2 and run commands
+          ssh -o StrictHostKeyChecking=no -i ci-cd-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+            # Ensure project directory exists and is a git repo
+            if [ -d "$HOME/CI-CD/.git" ]; then
+              cd $HOME/CI-CD
+              git pull
+            else
+              rm -rf $HOME/CI-CD
+              git clone https://github.com/Aniketgawande1/CI-CD.git $HOME/CI-CD
+              cd $HOME/CI-CD
+            fi
+            # Run your Python script
             python3 hello.py
-          '
+EOF
+
+          # Clean up SSH key
+          rm -f ci-cd-key.pem
