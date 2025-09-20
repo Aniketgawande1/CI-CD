@@ -1,5 +1,11 @@
-def say_hello ():
-    return "Hello , World"
+from datetime import datetime
 
-if __name__ == "__main__":
-    print(say_hello())
+# Example script
+message = f"Hello script ran at {datetime.now()}\n"
+
+# Print to console
+print(message)
+
+# Save to a log file
+with open("hello.log", "a") as f:
+    f.write(message)
