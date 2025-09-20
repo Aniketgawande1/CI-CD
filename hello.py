@@ -1,15 +1,9 @@
 from datetime import datetime
 
-def greet(name="World"):
-    """Return a greeting message."""
-    return f"Hello, {name}!"
+# Main script
+message = f"Hello! Script ran at {datetime.now()}"
+print(message)
 
-def log_message(msg):
-    """Print and append message to log file."""
-    print(msg)
-    with open("hello.log", "a") as f:
-        f.write(msg + "\n")
-
-if __name__ == "__main__":
-    message = f"{greet()} script ran at {datetime.now()}"
-    log_message(message)
+# Append to log file
+with open("hello.log", "a") as f:
+    f.write(message + "\n")

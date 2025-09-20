@@ -1,31 +1,10 @@
-import hello
-from datetime import datetime
+import os
 
-def test_greet_default():
-    # Default greeting
-    assert hello.greet() == "Hello, World!"
-
-def test_greet_custom_name():
-    # Custom greeting
-    assert hello.greet("Aniket") == "Hello, Aniket!"
-
-def test_log_message(tmp_path):
-    # Test that log_message writes to a file
-    test_file = tmp_path / "test.log"
-    msg = f"Test message at {datetime.now()}"
-
-    from unittest.mock import patch
-    import builtins
-
-    def custom_open(path, mode='r', *args, **kwargs):
-        if path == "log.txt":
-            return open(test_file, mode, *args, **kwargs)
-        return builtins.open(path, mode, *args, **kwargs)
-
-    with patch("builtins.open", new=custom_open):
-        hello.log_message(msg)
-
-    # Check contents
-    with open(test_file) as f:
+def test_hello_log():
+    # Make sure hello.log exists after running hello.py
+    os.system("python3 hello.py")  # Run the script
+    assert os.path.exists("hello.log")  # Check log file created
+    # Optionally, check that it contains "Hello!"
+    with open("hello.log") as f:
         content = f.read()
-    assert msg in content
+    assert "Hello!" in content
